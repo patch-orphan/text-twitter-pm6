@@ -5,10 +5,10 @@ use Text::Twitter::Extractor;
 class Text::Twitter::Validator {
     constant $max-tweet-length = 140;
 
-    has Text::Twitter::Extractor $!extractor = Text::Twitter::Extractor.new;
-
     has Int $.short-url-length       = 23;
     has Int $.short-url-length-https = 23;
+
+    has $!extractor = Text::Twitter::Extractor.new;
 
     method get-tweet-length (Str $text) {
         my $length = $text.codes;
@@ -24,7 +24,7 @@ class Text::Twitter::Validator {
         return $length;
     }
 
-    method is-valid-tweet (Stringy $text) {
+    method is-valid-tweet (Str $text) {
         # BOM: U+FFFE, U+FEFF
         # Special: U+FFFF
         # Direction change: U+202A..U+202E
