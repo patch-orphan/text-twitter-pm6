@@ -11,17 +11,15 @@ class Text::Twitter::Validator {
     has $!extractor = Text::Twitter::Extractor.new;
 
     method get-tweet-length (Str $text) {
-        my $length = $text.codes;
-
-        for $!extractor.extract-urls-with-indices($text) -> $url-entity {
-            $length += $url-entity.start - $url-entity.end + (
-                $url-entity.value ~~ m:i{ ^ 'https://' }
+        return [+] flat(
+            $text.codes,
+            $!extractor.extract-urls-with-indices($text).map: {
+                .start - .end,
+                .value ~~ m:i{ ^ 'https://' }
                     ?? $.short-url-length-https
                     !! $.short-url-length
-            );
-        }
-
-        return $length;
+            }
+        );
     }
 
     method is-valid-tweet (Str $text) {
