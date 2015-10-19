@@ -13,7 +13,7 @@ class Text::Twitter::Validator {
             $text.codes,
             $!extractor.extract-urls-with-indices($text).map: {
                 .start - .end,
-                $.short-url-length
+                $short-url-length
             }
         );
     }
