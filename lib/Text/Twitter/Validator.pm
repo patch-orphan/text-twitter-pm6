@@ -6,12 +6,12 @@ class Text::Twitter::Validator {
     constant $max-tweet-length = 140;
     constant $short-url-length = 23;
 
-    has $!extractor = Text::Twitter::Extractor.new;
+    has $extractor = Text::Twitter::Extractor.new;
 
     method get-tweet-length (Str $text) {
         return [+] flat(
             $text.codes,
-            $!extractor.extract-urls-with-indices($text).map: {
+            $extractor.extract-urls-with-indices($text).map: {
                 .start - .end,
                 $short-url-length
             }
